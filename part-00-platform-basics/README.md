@@ -31,6 +31,7 @@ Before starting, make sure you have:
 - ✅ **Bruno** installed  
   → [Download Bruno](https://www.usebruno.com/)   
     - Open `bruno/training-collection` folder. 
+    - Select `runtime` as environments collection.
 
 ---
 
