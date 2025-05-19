@@ -1,4 +1,4 @@
-# Part 1 - FEEL Expressions
+# Part 5 - FEEL Expressions
 
 In this assignment, you’ll evolve the image production process into a more complete version by adding a multi-instance service task and a FEEL expression mapping image to a common collection to iterate over. You will begin with a boilerplate BPMN file located in the **part-05-feel-expression/starter** folder and use the **Camunda Web Modeler** to complete your work.
 
