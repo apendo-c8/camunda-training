@@ -16,7 +16,7 @@ You have approximately **20 minutes** to complete all activities in Part 4.
 
 ## 📁 Files
 
-- `part-04-instance-incident-handling/starter/p3s-image-production-process.bpmn`  
+- `part-04-instance-incident-handling/starter/p4s-image-production-process.bpmn`  
   → Your **starting point**: a basic process that includes model upload and image rendering steps.
 
 ---
