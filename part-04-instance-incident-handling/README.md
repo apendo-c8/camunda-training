@@ -168,16 +168,16 @@ By completing this assignment, you will:
 > ⚠️ Stop the job workers first: `ctrl+C`
 
 1. In Bruno, get an access token from `authentication/Get Access Token`.
-2. Run `Create Fault Image Production Instance` with:
+2. Run `Create Fault Image Production Instance` from `1-create-image-production` folder with variables:
     ```json
     "modelId": "mid_1"
     ```
 3. Open **Camunda Operate** and find the paused instance.
-4. In Bruno, run `Activate Image Uploading Jobs`.
+4. In Bruno, run `Activate Image Uploading Jobs` from `2-upload-image` folder.
 
     > **Activation = job claimed by worker**. It must be activated before any action like failing or completing it.
 
-5. Within 10 seconds, run:
+5. Run `Fail without Retry Image Uploading Jobs` from `2-upload-image` folder:
     ```json
     {
       "retries": 0,
