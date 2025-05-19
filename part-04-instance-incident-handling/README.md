@@ -197,6 +197,12 @@ By completing this assignment, you will:
 
 ---
 
+✅ At this point, you have successfully learned how to simulate, inspect, and resolve incidents in Camunda using both workers and REST API techniques!
+
+➕ Bonus: If you have time left, try simulating the Non-Recoverable Error using the Bruno REST API commands available in the `2-upload-image` folder.
+
+---
+
 ## 🛠 Required Tools
 
 - [Camunda Web Modeler](https://camunda.com/download/modeler/)
