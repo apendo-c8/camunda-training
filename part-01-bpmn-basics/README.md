@@ -10,6 +10,10 @@ You have approximately **15 minutes** available to complete all activities in Pa
 
 ---
 
+⚠️ **Note**: If you’re short on time or prefer not to model the process from scratch, you can skip the modeling and programming steps and jump directly to Play, Deploy, or Execute using the pre-built artifact provided in the final/ folder.
+
+---
+
 ## 📁 Files
 
 - `part-01-bpmn-basics/starter/p1s-image-production-process.bpmn`  

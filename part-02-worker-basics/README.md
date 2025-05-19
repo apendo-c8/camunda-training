@@ -16,6 +16,10 @@ If you finish early:
 
 ---
 
+⚠️ **Note**: If you’re short on time or prefer not to model the process from scratch, you can skip the modeling and programming steps and jump directly to Play, Deploy, or Execute using the pre-built artifact provided in the final/ folder.
+
+---
+
 ## 📁 Files
 
 - `part-02-worker-basics/starter/p2s-image-production-process.bpmn`  

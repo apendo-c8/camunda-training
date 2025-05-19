@@ -10,6 +10,10 @@ You have approximately **20 minutes** available to complete all activities in Pa
 
 ---
 
+⚠️ **Note**: If you’re short on time or prefer not to model the process from scratch, you can skip the modeling and programming steps and jump directly to Play, Deploy, or Execute using the pre-built artifact provided in the final/ folder.
+
+---
+
 ## 📁 Files
 
 - `part-05-feel-expression/starter/p5s-image-production-process.bpmn`  

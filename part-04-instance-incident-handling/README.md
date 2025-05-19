@@ -10,6 +10,10 @@ You have approximately **20 minutes** to complete all activities in Part 4.
 
 ---
 
+⚠️ **Note**: If you’re short on time or prefer not to model the process from scratch, you can skip the modeling and programming steps and jump directly to Play, Deploy, or Execute using the pre-built artifact provided in the final/ folder.
+
+---
+
 ## 📁 Files
 
 - `part-04-instance-incident-handling/starter/p3s-image-production-process.bpmn`  
