@@ -173,7 +173,7 @@ Follow the steps below to test your process with live workers:
 5. Open a second terminal window and navigate to the `python/windows` folder.
 6. Start the job runner:
     ```
-    python part-02-runner-online.py
+    python part-02-runner.py
     ```
 7. Ensure both workers have started successfully and are connected to the cluster.
 8. Open a third terminal window and navigate to the `clients` folder inside the `python` directory.
