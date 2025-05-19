@@ -36,7 +36,7 @@ By completing this assignment, you will:
 
 ### 1. Open the Starter BPMN File
 
-- Upload `p3s-image-production-process.bpmn` to your dedicated training folder in the **Camunda Web Modeler**.
+- Upload `p4s-image-production-process.bpmn` to your dedicated training folder in the **Camunda Web Modeler**.
 - Open the file and locate the **Model Uploading** service task.
 
 ---
