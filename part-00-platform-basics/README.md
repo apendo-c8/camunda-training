@@ -73,6 +73,8 @@ By completing this assignment, you will:
 - Disable **Automatic Cluster Patch Updates**.
 - Click **Create Cluster** to finalize.
 
+🕝 This may take 1–2 minutes, so feel free to continue with the [next exercise](#3-create-a-camunda-modeler-project) while you wait.
+
 ### 2. Generate Cluster Client Credentials
 
 - Open your cluster and go to the **API** tab
