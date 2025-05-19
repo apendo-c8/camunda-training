@@ -190,9 +190,10 @@ By completing this assignment, you will:
     > **Explanation:** The job is failed, and retries are set to zero, causing an incident to be raised immediately.
 
 6. In Operate, fix the variable (`modelId`) and retry the incident.
-7. Re-activate the job.
-8. Observe token advancing to next task.
-9. Cancel the process when done.
+7. Re-activate the job by running `Activate Image Uploading Jobs` from `2-upload-image` folder again.
+8. Complete the job by running `Complete Image Uploading Jobs` from `2-upload-image` folder
+9. Observe token advancing to next task.
+10. Cancel the process when done.
 
 ---
 
