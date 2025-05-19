@@ -97,6 +97,9 @@ By completing this assignment, you will:
        async def produce_thumbnails(job: Job):
            ...
 
+5. Make sure to import JobController at the top of your script:
+
+       from pyzeebe.job.job import Job, JobController
 ---
 
 ## 🚀 Deploy Your Process Diagram
@@ -149,18 +152,18 @@ By completing this assignment, you will:
 9. Go to Operate and verify the path taken.
 10. Watch the printout from your worker:
 
-       📦 Thumbnails Production Worker in action with variables: {'imageId': 'iid-1', 'modelId': 'mid-1', 'imageRenderingQuality': 0.4, 'imageEnhancementQuality': 0.6000000000000001}
+       📦 Thumbnails Production Worker in action with variables: {'imageId': 'iid-1', 'modelId': 'mid-1', 'imageRenderingQuality': 0.4, 'imageEnhancementQuality': 0.6000000000000001}   
        🖼️ Processing image: iid-1
-       🔍 Rendering: 0.4, Enhancement: 0.6000000000000001, Thumbnails: 3
-       🎯 Throwing BPMN Error: thumbnail-production-error – Image quality insufficient for thumbnails
-       ⚠️ Error occurred during task thumbnails_production
+       🔍 Rendering: 0.4, Enhancement: 0.6000000000000001, Thumbnails: 3   
+       🎯 Throwing BPMN Error: thumbnail-production-error – Image quality insufficient for thumbnails   
+       ⚠️ Error occurred during task thumbnails_production   
        ❌ Image quality insufficient for thumbnails!
 
 ---
 
 ✅ At this point, you have successfully extended your BPMN model to handle timeouts and errors using a connected Python Job Worker!
 
-➕ Bonus: If you have time left, try handling additional failure scenarios or introduce escalation paths.
+➕ Bonus: If you have time left, try handling additional failure scenarios.
 
 ---
 
