@@ -1,0 +1,32 @@
+meta {
+  name: Fail without Retry Image Enhancement Jobs
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/failure
+  body: json
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "retries": 0,
+    "errorMessage": "Use the correct image identity format.",
+    "retryBackOff": 0,
+    "variables": {}
+  }
+}
+
+docs {
+  Mark the job as failed
+}

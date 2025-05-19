@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1et2gr9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.32.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Exceptional_Image_Enhancement_Process" name="Exceptional Image Enhancement Process" isExecutable="true">
+    <bpmn:documentation>{
+  "modelId": "mid-1",
+  "imageId": "iid-1",
+  "imageRenderingQuality": 0.3
+}</bpmn:documentation>
+    <bpmn:subProcess id="Broadcast_Signal_EventSubprocess" name="Broadcast Signal" triggeredByEvent="true">
+      <bpmn:endEvent id="Broadcast_Signal_Received" name="Broadcast Signal Received">
+        <bpmn:incoming>Flow_1dirflu</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1dirflu" sourceRef="Receive_Broadcast_Signal" targetRef="Broadcast_Signal_Received" />
+      <bpmn:startEvent id="Receive_Broadcast_Signal" name="Receive Broadcast Signal">
+        <bpmn:outgoing>Flow_1dirflu</bpmn:outgoing>
+        <bpmn:signalEventDefinition id="SignalEventDefinition_1o1f9g5" signalRef="Signal_2cfvke8" />
+      </bpmn:startEvent>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="Activity_1l1an6s" name="Enhance Image">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="exceptional_image_enhancement" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=imageId" target="imageIdentity" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1xwz0ka</bpmn:incoming>
+      <bpmn:outgoing>Flow_12qc907</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="TimerBoundaryEvent" name="Every 10s" cancelActivity="false" attachedToRef="Activity_1l1an6s">
+      <bpmn:outgoing>Flow_0g67zyq</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_01p0ukn">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R5/PT10S</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_06cjk1u" sourceRef="Gateway_17xgnwu" targetRef="High-Quality_Image_Achieved_EndEvent" />
+    <bpmn:sequenceFlow id="Flow_06tjtz2" sourceRef="Image_Enhancement_StartEvent" targetRef="Gateway_1jr913a" />
+    <bpmn:sequenceFlow id="Flow_09c2kvx" sourceRef="Image_Enhancement_Error" targetRef="Image_Enhancement_Failed" />
+    <bpmn:sequenceFlow id="Flow_0g67zyq" sourceRef="TimerBoundaryEvent" targetRef="Notify_Product_Owner" />
+    <bpmn:sequenceFlow id="Flow_0ovsjtc" sourceRef="Receive_Enhance_Image_Abort_Message" targetRef="Image_Enhancement_Aborted" />
+    <bpmn:sequenceFlow id="Flow_1077iah" sourceRef="Notify_Product_Owner" targetRef="Product_Owner_Notified" />
+    <bpmn:sequenceFlow id="Flow_12qc907" sourceRef="Activity_1l1an6s" targetRef="Gateway_17xgnwu" />
+    <bpmn:exclusiveGateway id="Gateway_17xgnwu">
+      <bpmn:incoming>Flow_12qc907</bpmn:incoming>
+      <bpmn:incoming>Flow_00801ud</bpmn:incoming>
+      <bpmn:outgoing>Flow_06cjk1u</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="High-Quality_Image_Achieved_EndEvent" name="High-Quality Image Achieved">
+      <bpmn:incoming>Flow_06cjk1u</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Image_Enhancement_Aborted" name="Image Enhancement Aborted">
+      <bpmn:incoming>Flow_0ovsjtc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Image_Enhancement_Error" name="Image Enhancement Error" attachedToRef="Activity_1l1an6s">
+      <bpmn:outgoing>Flow_09c2kvx</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_01njdts" errorRef="Error_0jz7b6w" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Image_Enhancement_Failed" name="Image Enhancement Failed">
+      <bpmn:incoming>Flow_09c2kvx</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="Image_Enhancement_StartEvent" name="Image Enhancement Start">
+      <bpmn:outgoing>Flow_06tjtz2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_00801ud" name="No" sourceRef="Gateway_1jr913a" targetRef="Gateway_17xgnwu" />
+    <bpmn:task id="Notify_Product_Owner" name="Notify Product Owner">
+      <bpmn:incoming>Flow_0g67zyq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1077iah</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Product_Owner_Notified" name="Product Owner Notified">
+      <bpmn:incoming>Flow_1077iah</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Receive_Enhance_Image_Abort_Message" name="Receive Enhance Image Abort Message" attachedToRef="Activity_1l1an6s">
+      <bpmn:outgoing>Flow_0ovsjtc</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0x26ts0" messageRef="Message_1r82089" />
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="Gateway_1jr913a" name="Should Image Be Enhanced?" default="Flow_00801ud">
+      <bpmn:incoming>Flow_06tjtz2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xwz0ka</bpmn:outgoing>
+      <bpmn:outgoing>Flow_00801ud</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1xwz0ka" name="Yes" sourceRef="Gateway_1jr913a" targetRef="Activity_1l1an6s">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=imageRenderingQuality &lt; 0.7</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:error id="Error_0jz7b6w" name="ImageEnhancementError" errorCode="image-enhancement-error" />
+  <bpmn:message id="Message_1r82089" name="ImageEnhancementAbortMessage">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=imageId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:signal id="Signal_2cfvke8" name="BroadcastSignal" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Exceptional_Image_Enhancement_Process">
+      <bpmndi:BPMNShape id="Activity_1gm01yl_di" bpmnElement="Broadcast_Signal_EventSubprocess" isExpanded="true">
+        <dc:Bounds x="245" y="80" width="350" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0tixuzv_di" bpmnElement="Broadcast_Signal_Received">
+        <dc:Bounds x="512" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="490" y="205" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0wnnzhd_di" bpmnElement="Receive_Broadcast_Signal">
+        <dc:Bounds x="285" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="264" y="205" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1dirflu_di" bpmnElement="Flow_1dirflu">
+        <di:waypoint x="321" y="180" />
+        <di:waypoint x="512" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_1l6r4v9" bpmnElement="Activity_1l1an6s">
+        <dc:Bounds x="370" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_17xgnwu_di" bpmnElement="Gateway_17xgnwu" isMarkerVisible="true">
+        <dc:Bounds x="505" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_07hrds9" bpmnElement="High-Quality_Image_Achieved_EndEvent">
+        <dc:Bounds x="682" y="362" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="663" y="405" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15chngq_di" bpmnElement="Image_Enhancement_Aborted">
+        <dc:Bounds x="682" y="762" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="666" y="805" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18ju61o_di" bpmnElement="Image_Enhancement_Failed">
+        <dc:Bounds x="682" y="572" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="668" y="615" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0lx767r" bpmnElement="Image_Enhancement_StartEvent">
+        <dc:Bounds x="172" y="362" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="405" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ly35ew_di" bpmnElement="Notify_Product_Owner">
+        <dc:Bounds x="470" y="650" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ubmuis_di" bpmnElement="Product_Owner_Notified">
+        <dc:Bounds x="622" y="672" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="604" y="715" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_10oj9o8" bpmnElement="Gateway_1jr913a" isMarkerVisible="true">
+        <dc:Bounds x="275" y="355" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="259" y="325" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_14uf3tz_di" bpmnElement="Receive_Enhance_Image_Abort_Message">
+        <dc:Bounds x="352" y="492" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="256" y="490" width="87" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wu6ga7_di" bpmnElement="Image_Enhancement_Error">
+        <dc:Bounds x="452" y="492" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="496" y="490" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05xee58_di" bpmnElement="TimerBoundaryEvent">
+        <dc:Bounds x="402" y="492" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="396" y="535" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_06cjk1u_di" bpmnElement="Flow_06cjk1u">
+        <di:waypoint x="555" y="380" />
+        <di:waypoint x="682" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1b89te8" bpmnElement="Flow_06tjtz2">
+        <di:waypoint x="208" y="380" />
+        <di:waypoint x="275" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09c2kvx_di" bpmnElement="Flow_09c2kvx">
+        <di:waypoint x="470" y="528" />
+        <di:waypoint x="470" y="590" />
+        <di:waypoint x="682" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0g67zyq_di" bpmnElement="Flow_0g67zyq">
+        <di:waypoint x="420" y="528" />
+        <di:waypoint x="420" y="690" />
+        <di:waypoint x="470" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ovsjtc_di" bpmnElement="Flow_0ovsjtc">
+        <di:waypoint x="370" y="528" />
+        <di:waypoint x="370" y="780" />
+        <di:waypoint x="682" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1077iah_di" bpmnElement="Flow_1077iah">
+        <di:waypoint x="570" y="690" />
+        <di:waypoint x="622" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12qc907_di" bpmnElement="Flow_12qc907">
+        <di:waypoint x="470" y="470" />
+        <di:waypoint x="530" y="470" />
+        <di:waypoint x="530" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1txe0ak" bpmnElement="Flow_00801ud">
+        <di:waypoint x="325" y="380" />
+        <di:waypoint x="505" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="347" y="357" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_08ivx05" bpmnElement="Flow_1xwz0ka">
+        <di:waypoint x="300" y="405" />
+        <di:waypoint x="300" y="470" />
+        <di:waypoint x="370" y="470" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="311" y="418" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

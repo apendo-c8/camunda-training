@@ -1,0 +1,28 @@
+meta {
+  name: Get Access Token
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{camundaAuthUrl}}
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  client_id: {{camundaClientId}}
+  client_secret: {{camundaClientSecret}}
+  grant_type: {{camundaGrantType}}
+  scope: {{camundaScope}}
+  audience: {{camundaAudience}}
+}
+
+script:post-response {
+  try {
+    bru.setEnvVar("accessToken",res.body.access_token);
+  }
+  catch(err) {
+    console.warn("No access token found in response.");
+  }
+}

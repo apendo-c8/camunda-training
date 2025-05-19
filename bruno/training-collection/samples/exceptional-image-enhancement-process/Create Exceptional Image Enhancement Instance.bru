@@ -1,0 +1,31 @@
+meta {
+  name: Create Exceptional Image Enhancement Instance
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/process-instances
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "processDefinitionId": "Exceptional_Image_Enhancement_Process",
+    "variables": {
+      "imageId": "iid-1",
+      "imageRenderingQuality": 0.2
+    },
+    "awaitCompletion": false,
+    "requestTimeout": 0
+  }
+}

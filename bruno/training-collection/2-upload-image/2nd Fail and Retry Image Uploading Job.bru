@@ -1,0 +1,32 @@
+meta {
+  name: 2nd Fail and Retry Image Uploading Job
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/failure
+  body: json
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "retries": 1,
+    "errorMessage": "Backend system is off line.",
+    "retryBackOff": 4000,
+    "variables": {}
+  }
+}
+
+docs {
+  Mark the job as failed
+}

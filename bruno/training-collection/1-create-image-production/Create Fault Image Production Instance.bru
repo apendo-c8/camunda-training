@@ -1,0 +1,30 @@
+meta {
+  name: Create Fault Image Production Instance
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/process-instances
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "processDefinitionId": "Image_Production_Process",
+    "variables": {
+      "modelId": "mid_1"
+    },
+    "awaitCompletion": false,
+    "requestTimeout": 0
+  }
+}

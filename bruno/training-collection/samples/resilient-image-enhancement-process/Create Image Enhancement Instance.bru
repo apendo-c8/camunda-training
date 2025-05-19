@@ -1,0 +1,31 @@
+meta {
+  name: Create Image Enhancement Instance
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/process-instances
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "processDefinitionId": "Resilient_Image_Enhancement_Process",
+    "variables": {
+      "imageId": "iid_1",
+      "imageRenderingQuality": 0.2
+    },
+    "awaitCompletion": false,
+    "requestTimeout": 0
+  }
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Complete Exceptional Image Enhancement Jobs
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/completion
+  body: none
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+docs {
+  Complete a job with the given payload, which allows completing the associated service task.
+}

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.32.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Image_Production_Process" name="Image Production Process" isExecutable="true">
+    <bpmn:subProcess id="Image_Enhancement_SubProcess" name="Enhance Image">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_04c0o3r</bpmn:incoming>
+      <bpmn:outgoing>Flow_15k8bxf</bpmn:outgoing>
+      <bpmn:serviceTask id="Activity_1l1an6s" name="Enhance Image">
+        <bpmn:extensionElements>
+          <zeebe:taskDefinition type="image_enhancement" />
+          <zeebe:ioMapping>
+            <zeebe:input source="=imageId" target="imageIdentity" />
+          </zeebe:ioMapping>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1xwz0ka</bpmn:incoming>
+        <bpmn:outgoing>Flow_12qc907</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_06cjk1u" sourceRef="Gateway_17xgnwu" targetRef="High-Quality_Image_Achieved_EndEvent" />
+      <bpmn:sequenceFlow id="Flow_06tjtz2" sourceRef="Event_0p14yg5" targetRef="Gateway_1jr913a" />
+      <bpmn:sequenceFlow id="Flow_12qc907" sourceRef="Activity_1l1an6s" targetRef="Gateway_17xgnwu" />
+      <bpmn:exclusiveGateway id="Gateway_17xgnwu">
+        <bpmn:incoming>Flow_12qc907</bpmn:incoming>
+        <bpmn:incoming>Flow_00801ud</bpmn:incoming>
+        <bpmn:outgoing>Flow_06cjk1u</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:endEvent id="High-Quality_Image_Achieved_EndEvent" name="High-Quality Image Achieved">
+        <bpmn:incoming>Flow_06cjk1u</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="Event_0p14yg5" name="Image Enhancement Start">
+        <bpmn:outgoing>Flow_06tjtz2</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_00801ud" name="No" sourceRef="Gateway_1jr913a" targetRef="Gateway_17xgnwu" />
+      <bpmn:exclusiveGateway id="Gateway_1jr913a" name="Should Image Be Enhanced?" default="Flow_00801ud">
+        <bpmn:incoming>Flow_06tjtz2</bpmn:incoming>
+        <bpmn:outgoing>Flow_1xwz0ka</bpmn:outgoing>
+        <bpmn:outgoing>Flow_00801ud</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_1xwz0ka" name="Yes" sourceRef="Gateway_1jr913a" targetRef="Activity_1l1an6s">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=imageRenderingQuality &lt; 0.7</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_04c0o3r" sourceRef="Image_Rendering_ReceiveTask" targetRef="Image_Enhancement_SubProcess" />
+    <bpmn:sequenceFlow id="Flow_0h7399h" sourceRef="Image_Production_StartEvent" targetRef="Model_Uploading_ServiceTask" />
+    <bpmn:sequenceFlow id="Flow_0wlxo6q" sourceRef="Model_Uploading_ServiceTask" targetRef="Image_Rendering_ReceiveTask" />
+    <bpmn:sequenceFlow id="Flow_15k8bxf" sourceRef="Image_Enhancement_SubProcess" targetRef="Image_Production_Completed_EndEvent" />
+    <bpmn:endEvent id="Image_Production_Completed_EndEvent" name="Image Production Completed">
+      <bpmn:incoming>Flow_15k8bxf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:receiveTask id="Image_Rendering_ReceiveTask" name="Render Image" messageRef="Message_1eqq107">
+      <bpmn:incoming>Flow_0wlxo6q</bpmn:incoming>
+      <bpmn:outgoing>Flow_04c0o3r</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:startEvent id="Image_Production_StartEvent" name="Start Image Production">
+      <bpmn:extensionElements>
+        <zeebe:properties />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0h7399h</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Model_Uploading_ServiceTask" name="Upload Model">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="model_uploading" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0h7399h</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wlxo6q</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_2bs4ris" name="MessageModelUpload">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=productionId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1eqq107" name="MessageRenderImageComplete">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=modelId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:error id="Error_0q8ombv" name="ThumbnailProductionError" errorCode="thumbnail-production-error" />
+  <bpmn:message id="Message_0dj3h4s" name="receive-image-prodcution-request-message" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Image_Production_Process">
+      <bpmndi:BPMNShape id="Activity_0jylnll_di" bpmnElement="Image_Enhancement_SubProcess">
+        <dc:Bounds x="600" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0t1x0c9_di" bpmnElement="Image_Production_Completed_EndEvent">
+        <dc:Bounds x="762" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="737" y="145" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05b34tc_di" bpmnElement="Image_Rendering_ReceiveTask">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1va7f3j_di" bpmnElement="Image_Production_StartEvent">
+        <dc:Bounds x="162" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="145" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0btl3ht_di" bpmnElement="Model_Uploading_ServiceTask">
+        <dc:Bounds x="280" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_04c0o3r_di" bpmnElement="Flow_04c0o3r">
+        <di:waypoint x="540" y="120" />
+        <di:waypoint x="600" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h7399h_di" bpmnElement="Flow_0h7399h">
+        <di:waypoint x="198" y="120" />
+        <di:waypoint x="280" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wlxo6q_di" bpmnElement="Flow_0wlxo6q">
+        <di:waypoint x="380" y="120" />
+        <di:waypoint x="440" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15k8bxf_di" bpmnElement="Flow_15k8bxf">
+        <di:waypoint x="700" y="120" />
+        <di:waypoint x="762" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_11igu7d">
+    <bpmndi:BPMNPlane id="BPMNPlane_167roil" bpmnElement="Image_Enhancement_SubProcess">
+      <bpmndi:BPMNShape id="BPMNShape_1l6r4v9" bpmnElement="Activity_1l1an6s">
+        <dc:Bounds x="410" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_17xgnwu_di" bpmnElement="Gateway_17xgnwu" isMarkerVisible="true">
+        <dc:Bounds x="545" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_07hrds9" bpmnElement="High-Quality_Image_Achieved_EndEvent">
+        <dc:Bounds x="662" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="643" y="165" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0lx767r" bpmnElement="Event_0p14yg5">
+        <dc:Bounds x="212" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="199" y="165" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_10oj9o8" bpmnElement="Gateway_1jr913a" isMarkerVisible="true">
+        <dc:Bounds x="315" y="115" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="299" y="85" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_06cjk1u_di" bpmnElement="Flow_06cjk1u">
+        <di:waypoint x="595" y="140" />
+        <di:waypoint x="662" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1b89te8" bpmnElement="Flow_06tjtz2">
+        <di:waypoint x="248" y="140" />
+        <di:waypoint x="315" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12qc907_di" bpmnElement="Flow_12qc907">
+        <di:waypoint x="510" y="230" />
+        <di:waypoint x="570" y="230" />
+        <di:waypoint x="570" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1txe0ak" bpmnElement="Flow_00801ud">
+        <di:waypoint x="365" y="140" />
+        <di:waypoint x="545" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="387" y="117" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_08ivx05" bpmnElement="Flow_1xwz0ka">
+        <di:waypoint x="340" y="165" />
+        <di:waypoint x="340" y="230" />
+        <di:waypoint x="410" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="351" y="178" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

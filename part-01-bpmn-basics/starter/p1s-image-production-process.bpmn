@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.32.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Image_Production_Process" name="Image Production Process" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_04c0o3r" sourceRef="Image_Rendering_ReceiveTask" targetRef="Image_Production_Completed_EndEvent" />
+    <bpmn:sequenceFlow id="Flow_0h7399h" sourceRef="Image_Production_StartEvent" targetRef="Model_Uploading_ServiceTask" />
+    <bpmn:sequenceFlow id="Flow_0wlxo6q" sourceRef="Model_Uploading_ServiceTask" targetRef="Image_Rendering_ReceiveTask" />
+    <bpmn:endEvent id="Image_Production_Completed_EndEvent" name="Image Production Completed">
+      <bpmn:incoming>Flow_04c0o3r</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:receiveTask id="Image_Rendering_ReceiveTask" name="Render Image" messageRef="Message_1eqq107">
+      <bpmn:incoming>Flow_0wlxo6q</bpmn:incoming>
+      <bpmn:outgoing>Flow_04c0o3r</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:startEvent id="Image_Production_StartEvent" name="Start Image Production">
+      <bpmn:extensionElements>
+        <zeebe:properties />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0h7399h</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Model_Uploading_ServiceTask" name="Upload Model">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="model_uploading" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0h7399h</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wlxo6q</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_2bs4ris" name="MessageModelUpload">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=productionId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1eqq107" name="MessageRenderImageComplete">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=modelId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:error id="Error_0q8ombv" name="ThumbnailProductionError" errorCode="thumbnail-production-error" />
+  <bpmn:message id="Message_0dj3h4s" name="receive-image-prodcution-request-message" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Image_Production_Process">
+      <bpmndi:BPMNShape id="Event_0t1x0c9_di" bpmnElement="Image_Production_Completed_EndEvent">
+        <dc:Bounds x="612" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="587" y="145" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05b34tc_di" bpmnElement="Image_Rendering_ReceiveTask">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1va7f3j_di" bpmnElement="Image_Production_StartEvent">
+        <dc:Bounds x="162" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="145" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0btl3ht_di" bpmnElement="Model_Uploading_ServiceTask">
+        <dc:Bounds x="280" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_04c0o3r_di" bpmnElement="Flow_04c0o3r">
+        <di:waypoint x="540" y="120" />
+        <di:waypoint x="612" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h7399h_di" bpmnElement="Flow_0h7399h">
+        <di:waypoint x="198" y="120" />
+        <di:waypoint x="280" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wlxo6q_di" bpmnElement="Flow_0wlxo6q">
+        <di:waypoint x="380" y="120" />
+        <di:waypoint x="440" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

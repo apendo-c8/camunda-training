@@ -1,0 +1,29 @@
+meta {
+  name: Boadcast Exceptional Image Enhancement Signal
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/signals/broadcast
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "signalName": "BroadcastSignal"
+  }
+}
+
+docs {
+  Complete a job with the given payload, which allows completing the associated service task.
+}

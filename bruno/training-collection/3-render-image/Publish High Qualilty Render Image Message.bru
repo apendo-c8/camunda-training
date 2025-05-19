@@ -1,0 +1,42 @@
+meta {
+  name: Publish High Qualilty Render Image Message
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/messages/publication
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "name": "MessageRenderImageComplete",
+    "correlationKey": "mid-1",
+    "timeToLive": 1000,
+    "messageId": "MessageRenderImageComplete",
+    "variables": {
+      "imageId": "iid-1",
+      "imageRenderingQuality": 0.9
+    }
+  }
+}
+
+docs {
+  Publishes a single message. Messages are published to specific partitions computed from their correlation keys. Messages can be buffered. The endpoint does not wait for a correlation result. Use the message correlation endpoint for such use cases.
+  
+  **Schema**
+  
+  **messageKey** int64
+  
+  The key of the message
+  
+  **tenantId** string
+  
+  The tenant ID of the message.
+}

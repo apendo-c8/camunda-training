@@ -1,0 +1,30 @@
+meta {
+  name: Fail Produce Thumbnails Jobs
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/error
+  body: json
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "errorCode": "thumbnail-production-error",
+    "errorMessage": "A Non-recoverable error. Please restart the process."
+  }
+}
+
+docs {
+  Reports a business error (i.e. non-technical) that occurs while processing a job.
+}

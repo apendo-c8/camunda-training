@@ -1,0 +1,98 @@
+meta {
+  name: Camunda 8 API (REST)
+}
+
+auth {
+  mode: none
+}
+
+vars:pre-request {
+  camundaApiBaseUrl: {{process.env.ZEEBE_REST_ADDRESS}}
+  camundaClientId: {{process.env.ZEEBE_CLIENT_ID}}
+  camundaClientSecret: {{process.env.ZEEBE_CLIENT_SECRET}}
+  camundaScope: {{process.env.CAMUNDA_CREDENTIALS_SCOPES}}
+  camundaAudience: {{process.env.ZEEBE_TOKEN_AUDIENCE}}
+  camundaAuthUrl: {{process.env.ZEEBE_AUTHORIZATION_SERVER_URL}}
+  camundaGrantType: client_credentials
+}
+
+docs {
+  ## 🚀 Overview
+  
+  The Camunda 8 API is a REST API designed to interact with a Camunda 8 cluster. Requests and responses are in JSON notation.
+  
+  Take a closer look at Camunda's Camunda 8 API (REST) documentation, and see [the interactive Camunda 8 REST API Explorer](https://docs.camunda.io/docs/next/apis-tools/camunda-api-rest/specifications/camunda-8-rest-api/) for specifications, example requests and responses, and code samples of interacting with the Camunda 8 REST API.
+  
+  For SaaS: `https://${REGION}.zeebe.camunda.io:443/${CLUSTER_ID}/v2/`, and for Self-Managed installations: `http://localhost:8080/v2/`.
+  
+  **Note: The Camunda 8 REST API only supports user tasks managed by Camunda (formerly known as** [<b>Zeebe user tasks</b>](https://docs.camunda.io/docs/next/apis-tools/migration-manuals/migrate-to-camunda-user-tasks/)**, which may still appear as such in your XML content).**
+  
+  ## 💪 What do you need to make it work?
+  
+  ### Authentication
+  
+  All requests to the Camunda 8 API require [authentication](https://docs.camunda.io/docs/next/apis-tools/camunda-api-rest/camunda-api-rest-authentication/).
+  
+  This Postman collection is configured to automatically handle the authentication process if:
+  
+  - You are using the SaaS offering of Camunda
+      
+  - You provide an API client ID and secret
+      
+  
+  ### 1\. Configure an API client
+  
+  To interact with the Camunda 8 API programmatically, [create client credentials](https://docs.camunda.io/docs/guides/setup-client-connection-credentials/) in your cluster's settings under the **API** tab.
+  
+  **After client credentials are created, the** **`Client secret`** **is only shown once. Save this** **`Client secret`** **somewhere safe.**
+  
+  ### 2\. Configure a Postman environment
+  
+  Enable the "Camunda SaaS" environment in Postman. From the Camunda 8 Postman workspace, click the **Environments** tab on the left side of the page, mouse over **Camunda SaaS**, and click the **Set active** checkmark icon. See the [Postman documentation](https://learning.postman.com/docs/sending-requests/variables/managing-environments/) on managing environments for more information.
+  
+  Configure the `Current value` of the following variables in the environment:
+  
+  - `authorizationServerUrl` - The URL of the authorization server. For the SaaS offering, this is `https://login.cloud.camunda.io/oauth/token`.
+      
+  - `camundaApiAudience` - The audience associated with the API client. For the SaaS offering, this is `zeebe.camunda.io`.
+      
+  - `camundaApiBaseUrl` - The base URL of your Camunda 8 instance. For the SaaS offering, this is `https://${REGION}.zeebe.camunda.io:443/${CLUSTER_ID}/v2/`, and can be captured from your API client connection information in the Camunda 8 Console.
+      
+  - `camundaApiClientId` - The client ID of the API client you created in the Camunda 8 Console.
+      
+  - `camundaApiClientSecret` - The client secret of the API client you created in the Camunda 8 Console.
+      
+  
+  With these values configured, a pre-request script defined on the collection will automatically retrieve an access token before each request, and store it in the `camundaApiBearerToken` variable. If you forget to configure any of these variables, requests will show a failed test with an error message indicating the unconfigured variable.
+  
+  If you prefer to manually manage the access token, configure its value in the `camundaApiBearerToken` variable.
+  
+  The access token is automatically included in the headers of every request in the collection: `Authorization: Bearer {{camundaApiBearerToken}}`.
+  
+  ### 3\. Make requests to the API
+  
+  With the environment configured, you can now make requests to the Camunda 8 API. The collection includes a variety of requests to get cluster topology, activate or fail jobs, and more.
+  
+  See [the Camunda 8 documentation](https://docs.camunda.io/docs/next/apis-tools/camunda-api-rest/specifications/camunda-8-rest-api/) for more information on the available endpoints and their usage.
+  
+  ### Common issues
+  
+  #### No request made, 1/2 tests pass
+  
+  If it appears no request was made, and the **Test Results** tab shows a failing test, there is likely misconfigured data. Common issues include:
+  
+  - No environment selected.
+      
+  - Unconfigured `authorizationServerUrl`, `camundaApiAudience`, `camundaApiBaseUrl`, `camundaApiClientId`, or `camundaApiClientSecret` variables.
+      
+  - Improperly formed access token.
+      
+  
+  #### Error message: "There was an error in evaluating the Pre-request Script:Error: No data, empty input at 1:1 ^"
+  
+  Additional information can be found in the Postman console. This error may indicate a problem with credentials, such as an invalid `camundaApiClientId` or `camundaApiClientSecret`.
+  
+  #### 403 Forbidden response
+  
+  A 403 Forbidden response may indicate insufficient permissions for the API client. Ensure the client has the necessary scopes and permissions to perform the requested operation.
+}

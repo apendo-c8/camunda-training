@@ -1,0 +1,34 @@
+import subprocess
+import signal
+import sys
+
+print("🚀 Starting all workers...")
+
+# Define all worker scripts
+worker_scripts = [
+    "../workers/model-uploading-online.py",
+    "../workers/image-enhancement.py",
+    "../workers/thumbnails-production.py",
+    "../workers/asset-storage.py"
+]
+
+# Start all workers
+processes = [subprocess.Popen(["python", script]) for script in worker_scripts]
+
+def shutdown(sig, frame):
+    print("\n🛑 Stopping all workers...")
+    for proc in processes:
+        proc.terminate()
+    for proc in processes:
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+    sys.exit(0)
+
+# Handle Ctrl+C
+signal.signal(signal.SIGINT, shutdown)
+
+# Wait for all workers to complete
+for proc in processes:
+    proc.wait()

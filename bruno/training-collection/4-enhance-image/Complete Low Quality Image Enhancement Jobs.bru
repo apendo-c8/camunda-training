@@ -1,0 +1,35 @@
+meta {
+  name: Complete Low Quality Image Enhancement Jobs
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/completion
+  body: json
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "variables": {
+      "imageEnhancementQuality": 0.5
+    }
+  }
+}
+
+docs {
+  Complete a job with the given payload, which allows completing the associated service task.
+}

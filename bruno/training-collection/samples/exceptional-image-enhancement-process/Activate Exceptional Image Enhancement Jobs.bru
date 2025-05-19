@@ -1,0 +1,113 @@
+meta {
+  name: Activate Exceptional Image Enhancement Jobs
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/activation
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "type": "exceptional_image_enhancement",
+    "timeout": 10000,
+    "maxJobsToActivate": 1,
+    "requestTimeout": 1000
+  }
+}
+
+script:post-response {
+  try {
+    bru.setEnvVar("jobKey", res.body.jobs[0].jobKey);
+  }
+  catch(err) {
+    console.warn("No jobs found in response.");
+  }
+}
+
+docs {
+  Iterate through all known partitions and activate jobs up to the requested maximum.
+  
+  **Schema**
+  
+  **jobs** object\[\]
+  
+  Array \[
+  
+  **key** int64
+  
+  the key, a unique identifier for the job
+  
+  **type** string
+  
+  the type of the job (should match what was requested)
+  
+  **processInstanceKey** int64
+  
+  the job's process instance key
+  
+  **processDefinitionId** string
+  
+  the bpmn process ID of the job's process definition
+  
+  **processDefinitionVersion** int32
+  
+  the version of the job's process definition
+  
+  **processDefinitionKey** int64
+  
+  the key of the job's process definition
+  
+  **elementId** string
+  
+  the associated task element ID
+  
+  **elementInstanceKey** int64
+  
+  the unique key identifying the associated task, unique within the scope of the process instance
+  
+  **customHeaders** object
+  
+  a set of custom headers defined during modelling; returned as a serialized JSON document
+  
+  **property name**\* any
+  
+  Additional properties allowed.
+  
+  **worker** string
+  
+  the name of the worker which activated this job
+  
+  **retries** int32
+  
+  the amount of retries left to this job (should always be positive)
+  
+  **deadline** int64
+  
+  when the job can be activated again, sent as a UNIX epoch timestamp
+  
+  **variables** object
+  
+  All variables visible to the task scope, computed at activation time
+  
+  **property name**\* any
+  
+  Additional properties allowed.
+  
+  **tenantId** string
+  
+  The ID of the tenant that owns the job
+  
+  \]
+}

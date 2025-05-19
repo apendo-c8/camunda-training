@@ -1,0 +1,39 @@
+meta {
+  name: Complete Produce Thumbnails Jobs
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{camundaApiBaseUrl}}/v2/jobs/:jobKey/completion
+  body: json
+  auth: bearer
+}
+
+params:path {
+  jobKey: {{jobKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "variables": {
+      "thumbnailIds":[
+        "tid-1",
+        "tid-2",
+        "tid-3"
+      ]
+    }
+  }
+}
+
+docs {
+  Complete a job with the given payload, which allows completing the associated service task.
+}
