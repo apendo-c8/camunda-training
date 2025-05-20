@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.32.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:process id="Image_Production_Process" name="Image Production Process" isExecutable="true">
     <bpmn:boundaryEvent id="Image_Rendering_TimerBoundaryEvent" name="30s" attachedToRef="Image_Rendering_ReceiveTask">
       <bpmn:outgoing>Flow_0cj4fzy</bpmn:outgoing>
@@ -88,7 +88,7 @@
     </bpmn:boundaryEvent>
     <bpmn:serviceTask id="Model_Uploading_ServiceTask" name="Upload Model">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="model_uploading" />
+        <zeebe:taskDefinition type="model_uploading" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1lgcvsy</bpmn:incoming>
       <bpmn:outgoing>Flow_0wlxo6q</bpmn:outgoing>
